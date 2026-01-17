@@ -71,7 +71,7 @@ st.write(".")
 
 if "messages" not in st.session_state:
     st.session_state.messages = [
-        {"role": "asisten", "syistem", "content": "Halo! Saya ZYREX New AI. Ada yang bisa saya bantu hari ini?"}
+        {"role": "assistant syistem", "content": "Halo! Saya ZYREX New AI. Ada yang bisa saya bantu hari ini?"}
     ]
 
 # Menampilkan Riwayat Chat
