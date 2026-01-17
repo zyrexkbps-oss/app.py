@@ -102,3 +102,4 @@ elif authentication_status == False:
 elif authentication_status == None:
     st.warning("Silakan masukkan Username dan Password Anda untuk memulai.")
     st.info("Hubungi Admin untuk mendapatkan akun akses.")
+    
