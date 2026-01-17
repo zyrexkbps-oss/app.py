@@ -65,3 +65,4 @@ if prompt := st.chat_input("Apa yang bisa saya bantu hari ini?"):
         st.markdown(response)
         
     st.session_state.messages.append({"role": "assistant", "content": response})
+        
