@@ -67,11 +67,11 @@ if uploaded_file:
 
 # 5. HALAMAN UTAMA (CHAT INTERFACE)
 st.title("⚡ ZYREX New AI")
-st.write("Tanyakan apa saja atau upload dokumen untuk dianalisis.")
+st.write(".")
 
 if "messages" not in st.session_state:
     st.session_state.messages = [
-        {"role": "assistant", "content": "Halo! Saya ZYREX New AI. Ada yang bisa saya bantu hari ini?"}
+        {"role": "syistem", "content": "Halo! Saya ZYREX New AI. Ada yang bisa saya bantu hari ini?"}
     ]
 
 # Menampilkan Riwayat Chat
