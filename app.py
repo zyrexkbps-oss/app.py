@@ -4,7 +4,7 @@ from PyPDF2 import PdfReader
 
 # 1. KONFIGURASI HALAMAN & TEMA (Branding)
 st.set_page_config(
-    page_title="Genius Pro AI", 
+    page_title="ZYREX New AI", 
     page_icon="⚡", 
     layout="wide",
     initial_sidebar_state="expanded"
@@ -66,7 +66,7 @@ if uploaded_file:
     st.toast("Dokumen Berhasil Dimuat!", icon='✅')
 
 # 5. HALAMAN UTAMA (CHAT INTERFACE)
-st.title("⚡ Genius Pro AI")
+st.title("⚡ ZYREX New AI")
 st.write("Tanyakan apa saja atau upload dokumen untuk dianalisis.")
 
 if "messages" not in st.session_state:
