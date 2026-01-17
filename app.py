@@ -71,7 +71,7 @@ st.write("Tanyakan apa saja atau upload dokumen untuk dianalisis.")
 
 if "messages" not in st.session_state:
     st.session_state.messages = [
-        {"role": "assistant", "content": "Halo! Saya Genius Pro. Ada yang bisa saya bantu hari ini?"}
+        {"role": "assistant", "content": "Halo! Saya ZYREX New AI. Ada yang bisa saya bantu hari ini?"}
     ]
 
 # Menampilkan Riwayat Chat
@@ -91,7 +91,7 @@ if prompt := st.chat_input("Ketik pesan Anda di sini..."):
         
         chat_completion = client.chat.completions.create(
             messages=[
-                {"role": "system", "content": "Kamu adalah Genius Pro, asisten AI profesional terbaik yang ramah dan solutif dalam Bahasa Indonesia."},
+                {"role": "system", "content": "Kamu adalah ZYREX New AI, asisten AI profesional terbaik yang ramah dan solutif dalam Bahasa Indonesia."},
                 {"role": "user", "content": context + prompt}
             ],
             model="llama-3.3-70b-versatile",
