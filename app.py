@@ -21,8 +21,10 @@ else:
 
 # 3. Sidebar: Fitur Tambahan & Upload File
 with st.sidebar:
-    st.title("🏢 Zyrex AI Panel")
-    st.info("Asisten ini bisa membaca dokumen Anda.")
+    st.divider()
+    st.markdown("### 📞 087879358671 Hubungi Pengembang")
+    st.write("Dibuat oleh: [Zyrex]")
+    st.write("Versi: 1.0 Pro")
     
     uploaded_file = st.file_uploader("Upload PDF untuk dianalisis", type="pdf")
     
@@ -65,8 +67,3 @@ if prompt := st.chat_input("Apa yang bisa saya bantu hari ini?"):
         st.markdown(response)
         
     st.session_state.messages.append({"role": "assistant", "content": response})
-    with st.sidebar:
-    st.divider()
-    st.markdown("### 📞 Hubungi Pengembang")
-    st.write("Dibuat oleh: [Nama Anda]")
-    st.write("Versi: 1.0 Pro")
