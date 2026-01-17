@@ -1,58 +1,67 @@
 import streamlit as st
 from groq import Groq
+from PyPDF2 import PdfReader
 
-# 1. Konfigurasi Halaman
-st.set_page_config(page_title="Asisten AI Profesional", page_icon="⚡")
+# 1. Tampilan Profesional (Branding)
+st.set_page_config(page_title="Zyrex AI Pro", page_icon="🏢", layout="wide")
 
-# Perbaikan kode desain (CSS) yang menyebabkan error sebelumnya
 st.markdown("""
     <style>
-    .stChatMessage { border-radius: 15px; }
+    .main { background-color: #0e1117; }
+    .stChatMessage { border-radius: 10px; border: 1px solid #30363d; }
     </style>
     """, unsafe_allow_html=True)
 
-st.title("⚡ Asisten AI Profesional")
-
-# 2. Koneksi ke API (Otomatis dari Secrets)
+# 2. Inisialisasi API
 if "GROQ_API_KEY" in st.secrets:
     client = Groq(api_key=st.secrets["GROQ_API_KEY"])
 else:
-    st.warning("Silakan masukkan API Key di menu Secrets Streamlit.")
+    st.error("Kunci API belum disetel!")
     st.stop()
 
-# 3. Sistem Memori (Agar AI Nyambung Diajak Bicara)
-if "messages" not in st.session_state:
-    st.session_state.messages = [
-        {"role": "system", "content": "Kamu adalah asisten AI yang cerdas dan selalu menjawab dalam Bahasa Indonesia yang profesional namun ramah."}
-    ]
-
-# 4. Sidebar untuk Fitur Tambahan
+# 3. Sidebar: Fitur Tambahan & Upload File
 with st.sidebar:
-    st.header("Pengaturan")
-    if st.button("Hapus Riwayat Percakapan"):
-        st.session_state.messages = [st.session_state.messages[0]]
+    st.title("🏢 Zyrex AI Panel")
+    st.info("Asisten ini bisa membaca dokumen Anda.")
+    
+    uploaded_file = st.file_uploader("Upload PDF untuk dianalisis", type="pdf")
+    
+    if st.button("Hapus Riwayat Chat"):
+        st.session_state.messages = []
         st.rerun()
 
-# 5. Menampilkan Riwayat Chat
-for message in st.session_state.messages:
-    if message["role"] != "system":
-        with st.chat_message(message["role"]):
-            st.markdown(message["content"])
+# 4. Logika Membaca PDF
+pdf_text = ""
+if uploaded_file:
+    reader = PdfReader(uploaded_file)
+    for page in reader.pages:
+        pdf_text += page.extract_text()
+    st.sidebar.success("Dokumen berhasil dibaca!")
 
-# 6. Input Pengguna dan Respon AI
-if prompt := st.chat_input("Tanyakan sesuatu..."):
+# 5. Sistem Chat
+if "messages" not in st.session_state:
+    st.session_state.messages = []
+
+for message in st.session_state.messages:
+    with st.chat_message(message["role"]):
+        st.markdown(message["content"])
+
+if prompt := st.chat_input("Apa yang bisa saya bantu hari ini?"):
+    # Gabungkan teks PDF ke dalam instruksi jika ada
+    context = f"\n\nKonteks Dokumen: {pdf_text}" if pdf_text else ""
+    full_prompt = f"Gunakan Bahasa Indonesia yang profesional. {context}\n\nUser: {prompt}"
+
     st.session_state.messages.append({"role": "user", "content": prompt})
     with st.chat_message("user"):
         st.markdown(prompt)
 
     with st.chat_message("assistant"):
-        # AI akan merespon berdasarkan seluruh riwayat (Memory)
         chat_completion = client.chat.completions.create(
-            messages=st.session_state.messages,
+            messages=[{"role": "user", "content": full_prompt}],
             model="llama-3.3-70b-versatile",
-            temperature=0.7
+            temperature=0.5
         )
         response = chat_completion.choices[0].message.content
         st.markdown(response)
-    
+        
     st.session_state.messages.append({"role": "assistant", "content": response})
