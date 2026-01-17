@@ -65,4 +65,8 @@ if prompt := st.chat_input("Apa yang bisa saya bantu hari ini?"):
         st.markdown(response)
         
     st.session_state.messages.append({"role": "assistant", "content": response})
-        
+    with st.sidebar:
+    st.divider()
+    st.markdown("### 📞 Hubungi Pengembang")
+    st.write("Dibuat oleh: [Nama Anda]")
+    st.write("Versi: 1.0 Pro")
