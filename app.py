@@ -11,27 +11,30 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# Custom CSS untuk tampilan premium dan mengganti ikon sidebar
+# Custom CSS untuk tampilan premium dan mengganti ikon sidebar menjadi Garis Tiga
 st.markdown("""
     <style>
+    /* MENGGANTI IKON PANAH MENJADI GARIS TIGA (HAMBURGER MENU) */
+    [data-testid="stSidebarCollapseIcon"] svg {
+        display: none;
+    }
+    [data-testid="stSidebarCollapseIcon"]::before {
+        content: '☰';
+        font-size: 26px;
+        color: white;
+        cursor: pointer;
+        line-height: 1;
+        display: block;
+        padding-top: 5px;
+    }
+
     /* Tampilan Sidebar */
     [data-testid="stSidebar"] {
         background-color: #1a1c23;
         color: white;
     }
     
-    /* MENGGANTI IKON PANAH MENJADI GARIS TIGA (HAMBURGER) */
-    [data-testid="stSidebarCollapseIcon"] svg {
-        display: none;
-    }
-    [data-testid="stSidebarCollapseIcon"]::before {
-        content: '☰';
-        font-size: 24px;
-        color: white;
-        cursor: pointer;
-        line-height: 1;
-    }
-
+    /* Tampilan Pesan Chat agar Melengkung (Rounded) */
     .stChatMessage {
         border-radius: 20px;
         padding: 15px;
@@ -39,6 +42,7 @@ st.markdown("""
         border: 1px solid #30363d;
     }
 
+    /* Tombol Donasi Kuning */
     .btn-donasi {
         background-color: #ffd700;
         color: black;
@@ -53,9 +57,7 @@ st.markdown("""
     </style>
     """, unsafe_allow_html=True)
 
-# ... Sisa kode Anda (Inisialisasi API, Sidebar, Logika Chat, dll) tetap sama
-
-# Fungsi bantuan untuk memproses gambar
+# Fungsi bantuan untuk memproses gambar ke Base64
 def encode_image(image_file):
     return base64.b64encode(image_file.read()).decode('utf-8')
 
@@ -96,7 +98,7 @@ with st.sidebar:
     st.divider()
     st.info("AI ini menggunakan model Llama-3 & Vision untuk respon cerdas.")
 
-# 4. LOGIKA ANALISIS DOKUMEN
+# 4. LOGIKA ANALISIS DOKUMEN (PDF)
 pdf_text = ""
 if uploaded_file:
     reader = PdfReader(uploaded_file)
@@ -107,7 +109,7 @@ if uploaded_file:
 # 5. HALAMAN UTAMA
 st.title("⚡ ZYREX New AI")
 
-# Inisialisasi kuota chat
+# Inisialisasi kuota chat (Limit 7 pesan)
 if "chat_count" not in st.session_state:
     st.session_state.chat_count = 0
 
@@ -124,16 +126,17 @@ for message in st.session_state.messages:
 # 6. PROSES INPUT & LIMITASI
 if prompt := st.chat_input("Ketik pesan Anda di sini..."):
     
+    # Cek Kuota Chat
     if st.session_state.chat_count >= 7:
         st.error("⚠️ Kuota chat gratis Anda telah habis (Maks 7 pesan).")
-        st.info("Silakan klik tombol 'Traktir Kopi' di sidebar untuk membuka akses unlimited Agar kebutuhan yang sulit didapatkan bisa dengan mudah memberikan solusi terbaik.")
+        st.info("Silakan klik tombol 'Traktir Kopi' di sidebar untuk membuka akses unlimited agar kebutuhan Anda bisa terpenuhi dengan mudah.")
     else:
         st.session_state.messages.append({"role": "user", "content": prompt})
         with st.chat_message("user"):
             st.markdown(prompt)
 
         with st.chat_message("assistant"):
-            # Jika ada gambar, gunakan model Vision
+            # JALUR 1: Jika ada gambar, gunakan model Vision
             if uploaded_image:
                 base64_image = encode_image(uploaded_image)
                 chat_completion = client.chat.completions.create(
@@ -148,7 +151,7 @@ if prompt := st.chat_input("Ketik pesan Anda di sini..."):
                     ],
                     model="llama-3.2-11b-vision-preview",
                 )
-            # Jika tidak ada gambar, gunakan model teks biasa
+            # JALUR 2: Jika hanya teks atau PDF
             else:
                 context = f"Konteks Dokumen: {pdf_text}\n\n" if pdf_text else ""
                 chat_completion = client.chat.completions.create(
