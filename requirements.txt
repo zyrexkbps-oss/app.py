@@ -1,4 +1,4 @@
+edge-tts
 groq
 streamlit
 PyPDF2
-gTTS
