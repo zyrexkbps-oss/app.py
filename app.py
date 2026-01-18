@@ -70,7 +70,7 @@ with st.sidebar:
     st.subheader("💰 Dukung Kami")
     st.write("Dapatkan akses tanpa batas (Kuota Unlimited) dengan mendukung kami.")
     # Ganti link di bawah dengan link Saweria/Trakteer/WhatsApp Anda
-    st.markdown('<a href="https://saweria.co/username_anda" class="btn-donasi">☕ Traktir Kopi / Upgrade Pro</a>', unsafe_allow_html=True)
+    st.markdown('<a href="https://saweria.co/NewAI" class="btn-donasi">☕ Traktir Kopi / Upgrade Pro</a>', unsafe_allow_html=True)
     
     st.divider()
     st.info("AI ini menggunakan model Llama-3 untuk respon super cepat.")
@@ -86,7 +86,7 @@ if uploaded_file:
 # 5. HALAMAN UTAMA
 st.title("⚡ ZYREX New AI")
 
-# Inisialisasi kuota chat (Limit 5 pesan untuk pengguna gratis)
+# Inisialisasi kuota chat (Limit 7 pesan untuk pengguna gratis)
 if "chat_count" not in st.session_state:
     st.session_state.chat_count = 0
 
@@ -105,8 +105,8 @@ if prompt := st.chat_input("Ketik pesan Anda di sini..."):
     
     # Cek Kuota Chat (Monetisasi)
     if st.session_state.chat_count >= 5:
-        st.error("⚠️ Kuota chat gratis Anda telah habis (Maks 5 pesan).")
-        st.info("Silakan klik tombol 'Traktir Kopi' di sidebar untuk membuka akses unlimited atau hubungi Admin.")
+        st.error("⚠️ Kuota chat gratis Anda telah habis (Maks 7 pesan).")
+        st.info("Silakan klik tombol 'Traktir Kopi' di sidebar untuk membuka akses unlimited Agar kebutuhan yang sulit didapatkan bisa dengan mudah memberikan solusi terbaik.")
     else:
         st.session_state.messages.append({"role": "user", "content": prompt})
         with st.chat_message("user"):
