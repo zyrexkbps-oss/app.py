@@ -3,7 +3,7 @@ from groq import Groq
 from PyPDF2 import PdfReader
 import base64
 
-# 1. KONFIGURASI HALAMAN & TEMA (Branding)
+# 1. KONFIGURASI HALAMAN & TEMA
 st.set_page_config(
     page_title="ZYREX New AI", 
     page_icon="⚡", 
@@ -11,20 +11,34 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# Custom CSS untuk tampilan premium dan modern
+# Custom CSS untuk tampilan premium dan mengganti ikon sidebar
 st.markdown("""
     <style>
+    /* Tampilan Sidebar */
     [data-testid="stSidebar"] {
         background-color: #1a1c23;
         color: white;
     }
+    
+    /* MENGGANTI IKON PANAH MENJADI GARIS TIGA (HAMBURGER) */
+    [data-testid="stSidebarCollapseIcon"] svg {
+        display: none;
+    }
+    [data-testid="stSidebarCollapseIcon"]::before {
+        content: '☰';
+        font-size: 24px;
+        color: white;
+        cursor: pointer;
+        line-height: 1;
+    }
+
     .stChatMessage {
         border-radius: 20px;
         padding: 15px;
         margin-bottom: 10px;
         border: 1px solid #30363d;
     }
-    /* Tombol Khusus Monetisasi */
+
     .btn-donasi {
         background-color: #ffd700;
         color: black;
@@ -38,6 +52,8 @@ st.markdown("""
     }
     </style>
     """, unsafe_allow_html=True)
+
+# ... Sisa kode Anda (Inisialisasi API, Sidebar, Logika Chat, dll) tetap sama
 
 # Fungsi bantuan untuk memproses gambar
 def encode_image(image_file):
