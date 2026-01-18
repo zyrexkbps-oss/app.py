@@ -71,13 +71,31 @@ if "chat_count" not in st.session_state:
 
 client = Groq(api_key=st.secrets["GROQ_API_KEY"])
 
-# --- 5. SIDEBAR ---
+# --- DI DALAM SIDEBAR ---
 with st.sidebar:
     st.title("New AI PRO")
     
-    st.subheader("🔑 Aktivasi Akun")
-    kode_input = st.text_input("Masukkan Kode Pro", type="password")
-    is_pro = (kode_input == "NEWAI2026")
+    # ... (kode aktivasi pro Anda yang sudah ada) ...
+
+    st.divider()
+    # 1. Tambahkan Checkbox Mode Admin
+    admin_mode = st.checkbox("🛠️ Mode Admin")
+    
+    if admin_mode:
+        # 2. Input Password Admin
+        admin_pass = st.text_input("Password Admin", type="password")
+        
+        # 3. Verifikasi Password (Ganti 'ADMIN99' sesuai keinginan Anda)
+        if admin_pass == "ADMIN99":
+            st.success("Akses Admin Diterima")
+            
+            # 4. Tombol untuk Melihat Rekaman Chat dari Supabase
+            if st.button("📊 Lihat Rekaman Aktivitas"):
+                st.write("Memuat data dari database...")
+                data_log = ambil_riwayat_db() # Memanggil fungsi yang mengambil data Supabase
+                st.table(data_log) # Menampilkan hasil rekaman dalam bentuk tabel
+        elif admin_pass:
+            st.error("Password Salah!")
     
     if is_pro:
         st.success("Mode Pro Aktif!")
